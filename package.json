@@ -1,0 +1,8 @@
+{
+  "name": "desknotes",
+  "version": "1.0.0",
+  "main": "electron/main.js",
+  "scripts": {
+    "electron": "electron ."
+  }
+}
