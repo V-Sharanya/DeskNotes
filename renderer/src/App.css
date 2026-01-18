@@ -50,3 +50,48 @@ body {
   line-height: 1.5;
 }
 
+/* Sidebar overlay */
+.sidebar-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 10;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 240px;
+  height: 100%;
+  background: #1f1f1f;
+  color: white;
+  padding: 12px;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.4);
+}
+
+/* Header */
+.sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.sidebar-header button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+/* Items */
+.sidebar-item {
+  padding: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-bottom: 6px;
+}
+
+.sidebar-item:hover {
+  background: #333;
+}
