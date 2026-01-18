@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 import CalendarView from "./CalendarView";
+import WeeklyReflection from "./WeeklyReflection";
+
 
 function App() {
   const todayKey = new Date().toLocaleDateString("en-CA");
@@ -38,8 +40,9 @@ function App() {
 
   /* ---------- WINDOW SIZE CONTROL ---------- */
   useEffect(() => {
-    window.desknotes.setWindowMode(view);
+    window.desknotes.setWindowMode({ mode: view });
   }, [view]);
+
 
   return (
     <>
@@ -62,7 +65,16 @@ function App() {
               📅 Calendar
             </div>
 
-            <div className="sidebar-item">📝 Weekly Reflection</div>
+            <div
+              className="sidebar-item"
+              onClick={() => {
+                setView("weekly");
+                setSidebarOpen(false);
+              }}
+            >
+              📝 Weekly Reflection
+            </div>
+
           </div>
         </div>
       )}
@@ -83,7 +95,7 @@ function App() {
             value={text}
             onChange={(e) => setText(e.target.value)}
           />
-        ) : (
+        ) : view === "calendar" ? (
           <CalendarView
             selectedDate={selectedDate}
             onSelectDate={(date) => {
@@ -91,6 +103,8 @@ function App() {
               setView("note"); // go back to note
             }}
           />
+        ) : view === "weekly" && (
+          <WeeklyReflection onBack={() => setView("note")} />
         )}
       </div>
     </>

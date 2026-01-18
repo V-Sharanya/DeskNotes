@@ -30,26 +30,55 @@ function createWindow() {
 }
 
 /* ---------- IPC FOR NOTES ---------- */
-ipcMain.handle("load-notes", async () => {
-  return JSON.parse(fs.readFileSync(NOTES_FILE, "utf-8"));
+ipcMain.handle("load-data", async () => {
+  const raw = JSON.parse(fs.readFileSync(NOTES_FILE, "utf-8"));
+
+  return {
+    notes: raw.notes || raw || {},
+    weeklyReflections: raw.weeklyReflections || {},
+  };
 });
 
 ipcMain.handle("save-note", async (_, date, content) => {
   const data = JSON.parse(fs.readFileSync(NOTES_FILE, "utf-8"));
-  data[date] = content;
+
+  if (!data.notes) data.notes = {};
+  data.notes[date] = content;
+
+  fs.writeFileSync(NOTES_FILE, JSON.stringify(data, null, 2));
+});
+
+ipcMain.handle("save-weekly-reflection", async (_, weekKey, content) => {
+  const data = JSON.parse(fs.readFileSync(NOTES_FILE, "utf-8"));
+
+  if (!data.weeklyReflections) data.weeklyReflections = {};
+  data.weeklyReflections[weekKey] = content;
+
   fs.writeFileSync(NOTES_FILE, JSON.stringify(data, null, 2));
 });
 
 /* ---------- IPC FOR WINDOW SIZE ---------- */
-ipcMain.handle("set-window-mode", (_, mode) => {
+ipcMain.handle("set-window-mode", (_, payload) => {
   if (!mainWindow) return;
 
-  if (mode === "calendar") {
-    mainWindow.setSize(520, 640, true); // BIG
-  } else {
-    mainWindow.setSize(420, 520, true); // SMALL
+  // NOTE MODE
+  if (payload === "note" || payload?.mode === "note") {
+    mainWindow.setSize(420, 520, true);
+    return;
+  }
+
+  // CALENDAR MODE (dynamic height)
+  if (payload?.mode === "calendar") {
+    const width = 540;
+    const height = Math.min(
+      Math.max(payload.height || 640, 600), // min
+      900                                // max
+    );
+
+    mainWindow.setSize(width, height, true);
   }
 });
+
 
 app.whenReady().then(createWindow);
 
