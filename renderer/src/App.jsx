@@ -62,7 +62,6 @@ function App() {
               📅 Calendar
             </div>
 
-            <div className="sidebar-item">📊 Analytics</div>
             <div className="sidebar-item">📝 Weekly Reflection</div>
           </div>
         </div>
