@@ -1,8 +1,32 @@
 {
   "name": "desknotes",
   "version": "1.0.0",
+  "description": "A private desktop journaling and reflection app",
+  "author": "V. Sharanya",
   "main": "electron/main.js",
   "scripts": {
-    "electron": "electron ."
+    "dev": "electron .",
+    "build:renderer": "cd renderer && npm run build",
+    "dist": "npm run build:renderer && electron-builder"
+  },
+  "build": {
+    "appId": "com.sharanya.desknotes",
+    "productName": "DeskNotes",
+    "files": [
+      "electron/**/*",
+      "renderer/dist/**/*"
+    ],
+    "directories": {
+      "buildResources": "assets"
+    },
+    "win": {
+      "target": "portable",
+      "icon": "assets/favicon.ico"
+    },
+    "publish": null
+  },
+  "devDependencies": {
+    "electron": "^40.0.0",
+    "electron-builder": "^24.13.3"
   }
 }

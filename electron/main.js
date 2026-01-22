@@ -24,9 +24,19 @@ function createWindow() {
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
     },
+    icon: require("path").join(__dirname, "../assets/favicon.ico"),
+
   });
 
+  if (process.env.NODE_ENV === "development") {
   mainWindow.loadURL("http://localhost:5173");
+} else {
+  mainWindow.loadFile(
+    require("path").join(__dirname, "../renderer/dist/index.html")
+  );
+}
+win.webContents.openDevTools();
+
 }
 
 /* ---------- IPC FOR NOTES ---------- */
